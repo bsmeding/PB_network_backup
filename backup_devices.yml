@@ -21,11 +21,11 @@
       local_action:
         module: set_fact
         timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+      run_once: true
 
     - name: run show running-config on remote devices
       ios_command:
         commands: show running
-        provider: "{{ creds_core_ssh }}"
       register: config
       when: "(ansible_network_os == 'ios' or ansible_network_os  == 'nxos')"
 
@@ -41,7 +41,6 @@
     
     - name: Compare last file with current state (IOS-core) << YOU MUST USE --diff IN PLAYBOOK EXECUTION
       ios_config:
-        provider: "{{ creds_core_ssh }}"
         diff_against: intended
         intended_config: "{{ last_config }}"
       when: stat_result.stat.exists == True and use_NAPALM == False
