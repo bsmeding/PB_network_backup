@@ -19,15 +19,15 @@
 
     - name: Get current date
       local_action:
-      command: date +%Y%m%d
-      register: datestamp
-      changed_when: False
+        command: date +%Y%m%d
+        register: datestamp
+        changed_when: False
 
     - name: Get current time
       local_action:
-      command: date +%H%M%S
-      register: timestamp
-      changed_when: False
+        command: date +%H%M%S
+        register: timestamp
+        changed_when: False
 
 
     - name: run show running-config on remote devices
