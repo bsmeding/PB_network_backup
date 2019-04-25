@@ -17,18 +17,9 @@
       check_mode: no
       changed_when: no
 
-    - name: Get current date
-      local_action:
-        command: date +%Y%m%d
-        register: datestamp
-        changed_when: False
-
-    - name: Get current time
-      local_action:
-        command: date +%H%M%S
-        register: timestamp
-        changed_when: False
-
+    - name: Set Date
+      set_fact:
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
 
     - name: run show running-config on remote devices
       ios_command:
@@ -70,7 +61,7 @@
     - name: save old config
       copy:
         content: "{{ last_config }}"
-        dest: "{{ config_output_dir }}/{{ config_history_subdir }}/{{ datestamp.stdout }}_{{ timestamp.stdout }}_{{ file_prefix }}{{ file_suffix }}"
+        dest: "{{ config_output_dir }}/{{ config_history_subdir }}/{{ timestamp }}_{{ file_prefix }}{{ file_suffix }}"
       listen: "save new config"
 
     - name: save current config
