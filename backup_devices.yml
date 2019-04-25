@@ -16,10 +16,9 @@
       run_once: yes
       check_mode: no
       changed_when: no
-
-    - name: Set Date
-      set_fact:
-        timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+    - name: Set Date
+      set_fact:
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
 
     - name: run show running-config on remote devices
       ios_command:
