@@ -8,8 +8,6 @@
     config_history_subdir: "historie"
     file_prefix: "{{ inventory_hostname }}"
     file_suffix: ".config"
-    ansible_network_os: 'ios'
-    ansible_become_method: enable
   tasks:
     - name: Backup folder for {{ inventory_hostname }}
       local_action: file path={{config_output_dir}}/{{ config_history_subdir }} state=directory
@@ -24,15 +22,16 @@
       run_once: true
 
     - name: run show running-config on remote devices
-      ios_command:
+      cli_command:
         commands: show running
       register: config
-      when: "(ansible_network_os == 'ios' or ansible_network_os  == 'nxos')"
+      when: "(ansible_network_os == 'ios' or ansible_network_os  == 'nxos' or ansible_network_os  == 'eos')"
 
     - name: Check if latest backup file exist for comparison
       stat:
         path: "{{ config_output_dir }}/{{ file_prefix }}{{ file_suffix }}"
       register: stat_result
+      when: "(ansible_network_os == 'ios' or ansible_network_os  == 'nxos' or ansible_network_os  == 'eos')"
 
     - name: Register latest config file
       set_fact:
