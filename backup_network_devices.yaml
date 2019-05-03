@@ -13,7 +13,7 @@
   tasks:
     - name: Backup folder for {{ inventory_hostname }}
       local_action: file path={{config_output_dir}}/{{ config_history_subdir }} state=directory
-      run_once: yes
+      run_once: false
       check_mode: no
       changed_when: no
 
@@ -43,7 +43,7 @@
       ios_config:
         diff_against: intended
         intended_config: "{{ last_config }}"
-      when: stat_result.stat.exists == True and use_NAPALM == False
+      when: stat_result.stat.exists == True
       register: config_diff
       notify: "save new config"
 
