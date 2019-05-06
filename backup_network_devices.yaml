@@ -23,7 +23,7 @@
 
     - name: run show running-config on remote devices
       cli_command:
-        commands: show running
+        command: show running
       register: config
       when: "(ansible_network_os == 'ios' or ansible_network_os  == 'nxos' or ansible_network_os  == 'eos')"
 
